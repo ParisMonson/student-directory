@@ -48,8 +48,13 @@ def print(names)
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students".center(100)
-  puts "--------------------------".center(100)
+  unless names.length == 1
+    puts "Overall, we have #{names.count} great students".center(100)
+    puts "--------------------------".center(100)
+  else
+    puts "Overall, we have #{names.count} great student".center(100)
+    puts "--------------------------".center(100)
+  end
 end
 
 
