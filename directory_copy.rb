@@ -24,19 +24,18 @@ def print_header
   puts "--------------------------".center(100)
 end
 
-def print(names)
+def print_students_list
   names_printed = 0
   cohort_list = []
   
-  for i in names do
+  for i in @students do
     i.each { |k, v|
       k == :cohort && !cohort_list.include?(v) ? cohort_list << v : nil
     }
-    
   end
   
   cohort_list.each do |cohort|
-    names.each do |hash|
+    @students.each do |hash|
       hash.each do |k, v|
         if k == :cohort && v == cohort
           puts "#{names_printed + 1}. #{hash[:name]} (#{hash[:cohort]})".center(100)
@@ -47,48 +46,60 @@ def print(names)
   end
 end
 
-def print_footer(names)
-  unless names.length <= 1
-    puts "Overall, we have #{names.count} great students".center(100)
+def print_footer
+  unless @students.length <= 1
+    puts "Overall, we have #{@students.count} great students".center(100)
     puts "--------------------------".center(100)
   else
-    puts "Overall, we have #{names.count} student".center(100)
+    puts "Overall, we have #{@students.count} student".center(100)
     puts "--------------------------".center(100)
   end
 end
 
 def interactive_menu
-  puts "Type in the numbers below to select what you want to do.".center(100)
   loop do
-  # Show user list options
-    selection = print_menu
-  # Do what the user has asked
-    case selection
-      when "1"
-        input_students
-      when "2"
-        show_students
-      when "9"
-        exit
-      else
-        puts "I dont know what you mean, try again".center(100)
-    end
-  # Repeat from step 1
+    print_menu
+    process(gets.chomp)
   end
 end
 
 def print_menu
+    puts "Type in the numbers below to select what you want to do.".center(100)
     puts "1. Inputs the students".center(100)
     puts "2. Show the students".center(100)
+    puts "3. Save student list to file".center(100)
     puts "9. Exit".center(100)
-    selection = gets.chomp
-    return selection
 end
 
 def show_students
   print_header
-  print(@students)
-  print_footer(@students)
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "3"
+      save_students
+      puts "Students Saved."
+    when "9"
+      exit
+    else
+      puts "I dont know what you mean, try again".center(100)
+  end
+end
+
+def save_students
+  file = File.open("students.csv", "w")
+  @students.each do |student|
+    output = [student[:name], student[:cohort]]
+    file.puts(output.join(","))
+  end
+  file.close 
 end
 
 interactive_menu
