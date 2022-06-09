@@ -26,14 +26,7 @@ end
 
 def print_students_list
   names_printed = 0
-  cohort_list = []
-  
-  for i in @students do
-    i.each { |k, v|
-      k == :cohort && !cohort_list.include?(v) ? cohort_list << v : nil
-    }
-  end
-  
+  cohort_list = check_cohort_exists
   cohort_list.each do |cohort|
     @students.each do |hash|
       hash.each do |k, v|
@@ -121,6 +114,16 @@ def try_load_students
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
+end
+
+def check_cohort_exists
+  cohort_list = []
+  for i in @students do
+    i.each { |k, v|
+      k == :cohort && !cohort_list.include?(v) ? cohort_list << v : nil
+    }
+  end
+  cohort_list
 end
 try_load_students
 interactive_menu
