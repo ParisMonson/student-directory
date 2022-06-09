@@ -1,16 +1,15 @@
-students = []
+@students =[]
 
 def input_students
   puts "Please enter the name of the student"
-  students = []
   name = gets.chomp
   puts "Please enter their cohort:"
   cohort = gets.chomp
   while !name.empty? do
     
-    students << {name: name, cohort: cohort.to_sym}
-    puts "Now we have #{students.count} students"
-    puts "Please enter the name of the student"
+    @students << {name: name, cohort: cohort.to_sym}
+    puts "Now we have #{@students.count} students"
+    puts "Please enter the name of the student or press Enter to finish."
     name = gets.chomp
     unless name.empty?
       puts "Please enter their cohort:"
@@ -18,7 +17,6 @@ def input_students
       cohort == "" ? cohort = "Unknown" : nil
     end
   end
-  students
 end
 
 def print_header
@@ -50,40 +48,47 @@ def print(names)
 end
 
 def print_footer(names)
-  unless names.length == 1
+  unless names.length <= 1
     puts "Overall, we have #{names.count} great students".center(100)
     puts "--------------------------".center(100)
   else
-    puts "Overall, we have #{names.count} great student".center(100)
+    puts "Overall, we have #{names.count} student".center(100)
     puts "--------------------------".center(100)
   end
 end
 
-def interactive_menu()
-  students = []
+def interactive_menu
+  puts "Type in the numbers below to select what you want to do.".center(100)
   loop do
-  # Show user list of options
-    puts "1. Inputs the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    selection = gets.chomp
+  # Show user list options
+    selection = print_menu
   # Do what the user has asked
     case selection
       when "1"
-        students = input_students
+        input_students
       when "2"
-        print_header
-        print(students)
-        print_footer(students)
+        show_students
       when "9"
         exit
       else
-        puts "I dont know what you mean, try again"
+        puts "I dont know what you mean, try again".center(100)
     end
   # Repeat from step 1
   end
 end
 
-print_header
-print(students)
-print_footer(students)
+def print_menu
+    puts "1. Inputs the students".center(100)
+    puts "2. Show the students".center(100)
+    puts "9. Exit".center(100)
+    selection = gets.chomp
+    return selection
+end
+
+def show_students
+  print_header
+  print(@students)
+  print_footer(@students)
+end
+
+interactive_menu
