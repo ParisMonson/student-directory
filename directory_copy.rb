@@ -1,4 +1,4 @@
-@students =[]
+@students = []
 
 def input_students
   puts "Please enter the name of the student"
@@ -102,4 +102,14 @@ def save_students
   file.close 
 end
 
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(",")
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end
+
+load_students
 interactive_menu
