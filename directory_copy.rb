@@ -12,9 +12,11 @@ def input_students
     puts "Now we have #{students.count} students"
     puts "Please enter the name of the student"
     name = gets.chomp
-    puts "Please enter their cohort:"
-    cohort = gets.chomp
-    cohort == "" ? cohort = "Unknown" : nil
+    unless name.empty?
+      puts "Please enter their cohort:"
+      cohort = gets.chomp
+      cohort == "" ? cohort = "Unknown" : nil
+    end
   end
   students
 end
@@ -57,8 +59,31 @@ def print_footer(names)
   end
 end
 
+def interactive_menu()
+  students = []
+  loop do
+  # Show user list of options
+    puts "1. Inputs the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    selection = gets.chomp
+  # Do what the user has asked
+    case selection
+      when "1"
+        students = input_students
+      when "2"
+        print_header
+        print(students)
+        print_footer(students)
+      when "9"
+        exit
+      else
+        puts "I dont know what you mean, try again"
+    end
+  # Repeat from step 1
+  end
+end
 
-students = input_students
 print_header
 print(students)
 print_footer(students)
